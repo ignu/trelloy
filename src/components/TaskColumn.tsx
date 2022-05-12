@@ -1,5 +1,7 @@
 import { FC, useCallback } from "react";
+import { useDrop } from "react-dnd";
 import { Category, useStore } from "../lib/store";
+import { Task } from "../lib/task";
 import ClickToEdit from "./ClickToEdit";
 import TaskView from "./TaskView";
 
@@ -8,7 +10,7 @@ type PropTypes = {
 };
 
 const TaskColumn: FC<PropTypes> = ({ category }) => {
-  const { updateCategory, addTask, deleteCategory } = useStore();
+  const { updateCategory, addTask, deleteCategory, updateTask } = useStore();
   const tasks = useStore((state) => state.tasks);
   const updateCategoryState = useCallback(
     (name: string) => {
@@ -27,8 +29,22 @@ const TaskColumn: FC<PropTypes> = ({ category }) => {
   }, []);
 
   const categoryTasks = tasks.filter((t) => t.categoryId === category.id);
+  const [{ isOver }, dropRef] = useDrop({
+    accept: "card",
+    drop: (task: Task) => {
+      updateTask({ ...task, categoryId: category.id });
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  });
   return (
-    <div className="rounded bg-gray-200 flex-no-shrink h-fit w-64 p-4 mr-3 pb-12">
+    <div
+      className={`rounded flex-no-shrink h-fit w-64 p-4 mr-3 pb-12 ${
+        isOver ? "bg-blue-200" : "bg-gray-200"
+      }`}
+      ref={dropRef}
+    >
       <div className="flex">
         <ClickToEdit
           className="text-bolder text-2xl w-52 truncate"
