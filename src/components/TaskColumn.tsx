@@ -28,7 +28,7 @@ const TaskColumn: FC<PropTypes> = ({ category }) => {
 
   const categoryTasks = tasks.filter((t) => t.categoryId === category.id);
   return (
-    <div className="rounded bg-gray-200 flex-no-shrink w-64 p-4 mr-3">
+    <div className="rounded bg-gray-200 flex-no-shrink h-fit w-64 p-4 mr-3 pb-12">
       <div className="flex">
         <ClickToEdit
           className="text-bolder text-2xl w-52 truncate"
@@ -40,7 +40,7 @@ const TaskColumn: FC<PropTypes> = ({ category }) => {
             onClick={() => {
               deleteCategory(category);
             }}
-            className="text-red-900 cursor-pointer"
+            className="text-2xl text-red-900 cursor-pointer"
             title="delete"
           >
             -
@@ -55,7 +55,9 @@ const TaskColumn: FC<PropTypes> = ({ category }) => {
             </div>
           );
         })}
-        <button onClick={addCard}>+ Add a Card</button>
+        <button className="mt-4" onClick={addCard}>
+          + Add a Card
+        </button>
       </div>
     </div>
   );

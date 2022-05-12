@@ -1,11 +1,13 @@
-import { Guid } from "guid-typescript";
 import { User } from "./store";
 
 export type Task = {
-  id: Guid;
+  id: string;
   name: string;
-  categoryId: Guid;
-  completedDate?: Date;
-  createdAt?: Date;
+  categoryId: string;
+  // HACK: to get persist to work in the next
+  // ten minutes, accept the jsonified version
+  // instead of mapping on rehyrdate
+  completedDate?: Date | String;
+  createdAt: Date | String;
   user: User;
 };

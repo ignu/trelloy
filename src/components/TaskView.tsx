@@ -27,12 +27,16 @@ const TaskView: FC<PropTypes> = ({ task }) => {
     });
   };
 
+  const createdAt = new Date(Date.parse(task.createdAt.toString()));
+
   return (
     <div className="p-4 mt-4 bg-white rounded">
       <div>
         <ClickToEdit className="text-bold text-lg" text={task.name} onChange={updateCurrentTask} />
       </div>
-      <span className="opacity-50 text-xs">{task.createdAt?.toDateString()}</span>
+      <span title={createdAt.toLocaleTimeString()} className="opacity-50 text-xs">
+        {createdAt.toDateString()}
+      </span>
       <SelectUser user={task.user} onSelect={setTaskUser} />
     </div>
   );
