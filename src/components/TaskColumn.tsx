@@ -1,28 +1,48 @@
-import { FC } from "react";
-import { useStore } from "../lib/store";
+import { FC, useCallback, useEffect } from "react";
+import { Category, useStore } from "../lib/store";
 import ClickToEdit from "./ClickToEdit";
 import TaskView from "./TaskView";
 
 type PropTypes = {
-  category: string;
+  category: Category;
 };
 
 const TaskColumn: FC<PropTypes> = ({ category }) => {
-  const { getCategoryTasks } = useStore();
-  const tasks = getCategoryTasks(category);
+  const { updateCategory, addTask, tasks } = useStore();
+  const updateCategoryState = useCallback(
+    (name: string) => {
+      const newCategory = {
+        ...category,
+        name,
+      };
+
+      updateCategory(newCategory);
+    },
+    [category.id]
+  );
+
+  const addCard = useCallback(() => {
+    addTask(category.id);
+  }, []);
 
   return (
-    <div>
-      <ClickToEdit className="text-bolder text-2xl" text={category} />
-
-      <div className="w-36 border-2">
-        {tasks.map((task) => {
-          return (
-            <div key={task.id.toString()}>
-              <TaskView task={task} />
-            </div>
-          );
-        })}
+    <div className="rounded bg-gray-200 flex-no-shrink w-64 p-4 mr-3">
+      <ClickToEdit
+        className="text-bolder text-2xl w-52"
+        text={category.name}
+        onChange={updateCategoryState}
+      />
+      <div>
+        {tasks
+          .filter((t) => t.categoryId === category.id)
+          .map((task) => {
+            return (
+              <div key={task.id.toString()}>
+                <TaskView task={task} />
+              </div>
+            );
+          })}
+        <button onClick={addCard}>+ Add a Card</button>
       </div>
     </div>
   );

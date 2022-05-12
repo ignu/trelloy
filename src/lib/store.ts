@@ -4,24 +4,53 @@ import create from "zustand";
 import { Task } from "./task";
 type StoreState = {
   tasks: Task[];
-  columns: string[];
+  categories: Category[];
   getCategories: () => any;
-  getCategoryTasks: (category: string) => Task[];
+  addTask: (categoryId: Guid) => void;
+  getCategoryTasks: (category: Category) => Task[];
+  updateCategory: (category: Category) => void;
 };
 
-const initialTasks: Task[] = [
-  {
+export type Category = {
+  id: Guid;
+  name: string;
+};
+
+const newCategory = (name: string): Category => {
+  return { id: Guid.create(), name };
+};
+
+const createTask = (categoryId: Guid): Task => {
+  return {
     id: Guid.create(),
-    name: "This project",
-    category: "Doing",
-  },
-];
+    name: "",
+    categoryId,
+    createdAt: new Date(),
+  };
+};
 
 export const useStore = create<StoreState>((set, get) => ({
-  tasks: initialTasks,
-  columns: ["To Do", "Doing", "Done"],
+  tasks: [],
+  categories: [newCategory("To Do"), newCategory("Doing"), newCategory("Done")],
   getCategories: () => groupBy(prop("name"), get().tasks),
-  getCategoryTasks: (category: string) => {
-    return filter(propEq("category", category), get().tasks) ?? [];
+  getCategoryTasks: (category: Category) => {
+    return filter(propEq("id", category.id), get().tasks) ?? [];
+  },
+  addTask: (categoryId: Guid) => {
+    set((state) => {
+      console.log(state.tasks, "🦄 1");
+      return {
+        ...state,
+        tasks: [...state.tasks, createTask(categoryId)],
+      };
+    });
+  },
+  updateCategory: (category: Category) => {
+    set((state) => {
+      return {
+        ...state,
+        categories: map((c) => (c.id === category.id ? category : c), get().categories),
+      };
+    });
   },
 }));
