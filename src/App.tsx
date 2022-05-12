@@ -1,12 +1,13 @@
 import './App.css';
+import TaskColumn from './components/TaskColumn';
 import { useStore } from './lib/store';
 
 function App() {
-  const { tasks } = useStore();
+  const { columns } = useStore();
   return (
     <div className="App">
       <div>
-        {tasks.length} 
+        {columns.map((category) => ( <TaskColumn key={category} category={category}/>))}
       </div>
     </div>
   );
