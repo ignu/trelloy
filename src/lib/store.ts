@@ -7,7 +7,7 @@ type StoreState = {
   users: User[];
   currentUser: User;
   categories: Category[];
-  getCategories: () => any;
+  addCategory: () => void;
   addTask: (categoryId: Guid) => void;
   getCategoryTasks: (category: Category) => Task[];
   updateCategory: (category: Category) => void;
@@ -63,7 +63,6 @@ export const useStore = create<StoreState>((set, get) => ({
   users,
   currentUser: users[0],
   categories: [newCategory("To Do"), newCategory("Doing"), newCategory("Done")],
-  getCategories: () => groupBy(prop("name"), get().tasks),
   getCategoryTasks: (category: Category) => {
     return filter(propEq("id", category.id), get().tasks) ?? [];
   },
@@ -80,6 +79,14 @@ export const useStore = create<StoreState>((set, get) => ({
       return {
         ...state,
         categories: map((c) => (c.id === category.id ? category : c), get().categories),
+      };
+    });
+  },
+  addCategory: () => {
+    set((state) => {
+      return {
+        ...state,
+        categories: [...get().categories, newCategory("New List")],
       };
     });
   },
