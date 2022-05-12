@@ -38,6 +38,11 @@ const ClickToEdit: FC<PropTypes> = ({ text, className, onChange }) => {
       className={className}
       onChange={editText}
       onBlur={finishEdit}
+      onKeyPress={(e) => {
+        if (e.key === "Enter") {
+          finishEdit();
+        }
+      }}
       type="text"
       value={editingText}
     ></input>
