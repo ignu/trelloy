@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect } from "react";
+import { FC, useCallback } from "react";
 import { Category, useStore } from "../lib/store";
 import ClickToEdit from "./ClickToEdit";
 import TaskView from "./TaskView";
@@ -8,7 +8,8 @@ type PropTypes = {
 };
 
 const TaskColumn: FC<PropTypes> = ({ category }) => {
-  const { updateCategory, addTask, tasks } = useStore();
+  const { updateCategory, addTask } = useStore();
+  const tasks = useStore((state) => state.tasks);
   const updateCategoryState = useCallback(
     (name: string) => {
       const newCategory = {
@@ -37,7 +38,7 @@ const TaskColumn: FC<PropTypes> = ({ category }) => {
           .filter((t) => t.categoryId === category.id)
           .map((task) => {
             return (
-              <div key={task.id.toString()}>
+              <div key={task.name}>
                 <TaskView task={task} />
               </div>
             );
