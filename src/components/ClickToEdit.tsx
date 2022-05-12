@@ -1,4 +1,4 @@
-import { FC, useCallback, useState, ChangeEvent, useRef } from "react";
+import { FC, useCallback, useState, ChangeEvent, useRef, useEffect } from "react";
 
 type PropTypes = {
   text: string;
@@ -10,10 +10,15 @@ const ClickToEdit: FC<PropTypes> = ({ text, className, onChange }) => {
   const [editingText, setEditingText] = useState<string | undefined>(undefined);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const startEdit = useCallback(() => {
-    inputRef.current?.focus();
+  const startEdit = () => {
     setEditingText(text);
-  }, [text, inputRef.current]);
+  };
+
+  useEffect(() => {
+    if (!!editingText) {
+      inputRef.current?.focus();
+    }
+  }, [!!editingText]);
 
   const editText = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => setEditingText(e.currentTarget.value),
