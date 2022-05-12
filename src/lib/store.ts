@@ -3,6 +3,7 @@ import { filter, map, propEq } from "ramda";
 import create from "zustand";
 import { persist } from "zustand/middleware";
 import { Task } from "./task";
+
 type StoreState = {
   tasks: Task[];
   users: User[];
