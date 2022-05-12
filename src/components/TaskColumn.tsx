@@ -1,16 +1,23 @@
-import { FC } from "react"
+import { FC } from "react";
+import { useStore } from "../lib/store";
+import TaskView from "./TaskView";
 
 type PropTypes = {
-  category: string,
-}
+  category: string;
+};
 
-const TaskColumn: FC<PropTypes> = ({category}) => {
+const TaskColumn: FC<PropTypes> = ({ category }) => {
+  const { getCategoryTasks } = useStore();
+  const tasks = getCategoryTasks(category);
+
   return (
-  <div>
+    <div>
       <h1>{category}</h1>
-  </div>
-  )
+      {tasks.map((task) => {
+        return <TaskView task={task} />;
+      })}
+    </div>
+  );
+};
 
-}
-
-export default TaskColumn
+export default TaskColumn;
