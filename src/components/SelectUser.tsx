@@ -23,6 +23,7 @@ const SelectUser: FC<PropTypes> = ({ user, onSelect }) => {
         {users.map((user) => {
           return (
             <div
+              key={user.id}
               className="flex p-2 hover:bg-blue-50 hover:cursor-pointer"
               onClick={() => {
                 onSelect(user);

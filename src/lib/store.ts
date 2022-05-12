@@ -7,6 +7,7 @@ type StoreState = {
   users: User[];
   currentUser: User;
   categories: Category[];
+  deleteCategory: (category: Category) => void;
   addCategory: () => void;
   addTask: (categoryId: Guid) => void;
   getCategoryTasks: (category: Category) => Task[];
@@ -26,7 +27,7 @@ const newCategory = (name: string): Category => {
 const createTask = (categoryId: Guid, user: User): Task => {
   return {
     id: Guid.create(),
-    name: "Add To Task",
+    name: "New Task",
     user,
     categoryId,
     createdAt: new Date(),
@@ -87,6 +88,14 @@ export const useStore = create<StoreState>((set, get) => ({
       return {
         ...state,
         categories: [...get().categories, newCategory("New List")],
+      };
+    });
+  },
+  deleteCategory: (category: Category) => {
+    set((state) => {
+      return {
+        ...state,
+        categories: [...get().categories.filter((c) => c.id !== category.id)],
       };
     });
   },

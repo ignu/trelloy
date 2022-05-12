@@ -10,7 +10,9 @@ function App() {
         {categories.map((category) => (
           <TaskColumn key={category.id.toString()} category={category} />
         ))}
-        <div onClick={addCategory}>+ Add another list</div>
+        <div className="bg-gray-200 rounded w-44 p-2 h-10 cursor-pointer" onClick={addCategory}>
+          + Add another list
+        </div>
       </div>
     </div>
   );
