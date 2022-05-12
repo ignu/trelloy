@@ -29,7 +29,7 @@ const TaskColumn: FC<PropTypes> = ({ category }) => {
   return (
     <div className="rounded bg-gray-200 flex-no-shrink w-64 p-4 mr-3">
       <ClickToEdit
-        className="text-bolder text-2xl w-52"
+        className="text-bolder text-2xl w-52 truncate"
         text={category.name}
         onChange={updateCategoryState}
       />

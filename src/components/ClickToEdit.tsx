@@ -1,4 +1,4 @@
-import { FC, useCallback, useState, ChangeEvent } from "react";
+import { FC, useCallback, useState, ChangeEvent, useRef } from "react";
 
 type PropTypes = {
   text: string;
@@ -8,22 +8,25 @@ type PropTypes = {
 
 const ClickToEdit: FC<PropTypes> = ({ text, className, onChange }) => {
   const [editingText, setEditingText] = useState<string | undefined>(undefined);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const startEdit = useCallback(() => setEditingText(text), [text]);
+  const startEdit = useCallback(() => {
+    inputRef.current?.focus();
+    setEditingText(text);
+  }, [text, inputRef.current]);
+
   const editText = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => setEditingText(e.currentTarget.value),
     []
   );
   const finishEdit = () => {
-    console.log(onChange, editingText, "🦄 1");
-    console.log(editingText, "🐱 1");
     onChange && editingText && onChange(editingText);
     setEditingText(undefined);
   };
 
   if (!editingText) {
     return (
-      <span className={`cursor-hover ${className}`} onClick={startEdit}>
+      <span className={`cursor-text ${className}`} onClick={startEdit}>
         {text}
       </span>
     );
@@ -31,6 +34,7 @@ const ClickToEdit: FC<PropTypes> = ({ text, className, onChange }) => {
 
   return (
     <input
+      ref={inputRef}
       className={className}
       onChange={editText}
       onBlur={finishEdit}

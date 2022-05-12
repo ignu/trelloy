@@ -4,6 +4,8 @@ import create from "zustand";
 import { Task } from "./task";
 type StoreState = {
   tasks: Task[];
+  users: User[];
+  currentUser: User;
   categories: Category[];
   getCategories: () => any;
   addTask: (categoryId: Guid) => void;
@@ -21,18 +23,45 @@ const newCategory = (name: string): Category => {
   return { id: Guid.create(), name };
 };
 
-const createTask = (categoryId: Guid): Task => {
+const createTask = (categoryId: Guid, user: User): Task => {
   return {
     id: Guid.create(),
     name: "Add To Task",
+    user,
     categoryId,
     createdAt: new Date(),
   };
 };
 
+export type User = {
+  id: number;
+  name: string;
+  profileUrl: string;
+};
+
+const users: User[] = [
+  {
+    id: 1,
+    name: "Tony Soprano",
+    profileUrl: "https://i.pravatar.cc/50?img=3",
+  },
+  {
+    id: 2,
+    name: "Paulie Walnuts",
+    profileUrl: "https://i.pravatar.cc/50?img=4",
+  },
+  {
+    id: 3,
+    name: "Silvio Date",
+    profileUrl: "https://i.pravatar.cc/50?img=5",
+  },
+];
+
 export const useStore = create<StoreState>((set, get) => ({
   tasks: [],
   getTasks: () => get().tasks,
+  users,
+  currentUser: users[0],
   categories: [newCategory("To Do"), newCategory("Doing"), newCategory("Done")],
   getCategories: () => groupBy(prop("name"), get().tasks),
   getCategoryTasks: (category: Category) => {
@@ -42,7 +71,7 @@ export const useStore = create<StoreState>((set, get) => ({
     set((state) => {
       return {
         ...state,
-        tasks: [...state.tasks, createTask(categoryId)],
+        tasks: [...state.tasks, createTask(categoryId, get().currentUser)],
       };
     });
   },

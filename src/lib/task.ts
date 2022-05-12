@@ -1,4 +1,5 @@
 import { Guid } from "guid-typescript";
+import { User } from "./store";
 
 export type Task = {
   id: Guid;
@@ -6,4 +7,5 @@ export type Task = {
   categoryId: Guid;
   completedDate?: Date;
   createdAt?: Date;
+  user: User;
 };
