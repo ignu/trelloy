@@ -5,8 +5,8 @@ import { useStore } from "./lib/store";
 function App() {
   const { columns } = useStore();
   return (
-    <div className="App">
-      <div>
+    <div className="p-32">
+      <div className="flex w-full">
         {columns.map((category) => (
           <TaskColumn key={category} category={category} />
         ))}

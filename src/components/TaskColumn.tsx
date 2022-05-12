@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { useStore } from "../lib/store";
+import ClickToEdit from "./ClickToEdit";
 import TaskView from "./TaskView";
 
 type PropTypes = {
@@ -12,10 +13,17 @@ const TaskColumn: FC<PropTypes> = ({ category }) => {
 
   return (
     <div>
-      <h1>{category}</h1>
-      {tasks.map((task) => {
-        return <TaskView task={task} />;
-      })}
+      <ClickToEdit className="text-bolder text-2xl" text={category} />
+
+      <div className="w-36 border-2">
+        {tasks.map((task) => {
+          return (
+            <div key={task.id.toString()}>
+              <TaskView task={task} />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

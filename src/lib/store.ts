@@ -1,3 +1,4 @@
+import { Guid } from "guid-typescript";
 import { filter, groupBy, map, prop, propEq } from "ramda";
 import create from "zustand";
 import { Task } from "./task";
@@ -10,6 +11,7 @@ type StoreState = {
 
 const initialTasks: Task[] = [
   {
+    id: Guid.create(),
     name: "This project",
     category: "Doing",
   },
